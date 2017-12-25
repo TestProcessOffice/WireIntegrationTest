@@ -1,0 +1,2 @@
+MATCH (node)
+DETACH delete node

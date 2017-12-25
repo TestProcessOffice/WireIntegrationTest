@@ -1,0 +1,7 @@
+//create pin node and relationship
+CREATE(pin1D21JP1A:PIN{connectorName:"1D-21J-P1",pinIndex:"A",fullName:"1D-21J-P1-A"})
+CREATE (pin1U211P1AD10:PIN{connectorName:"1U-211-P1",pinIndex:"A-D10",fullName:"1U-211-P1-A-D10"})
+CREATE
+	(pin1D21JP1A)-[:C{status:NULL,chapter:"21-00-00",times:0}]->(pin1U211P1AD10),
+	(pin1D21JP1A)-[:F{status:NULL,chapter:"21-00-00",times:0}]->(pin1U211P1AD10)
+return pin1D21JP1A,pin1U211P1AD10

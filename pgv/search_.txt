@@ -1,0 +1,5 @@
+
+
+
+
+source="V.txt" sourcetype="wip_report_analysis" | rex field=C_pin "(?P<Node>[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+)" |stats count As Total count(eval(Status="HIGH")) as Failed count(eval(Status="PASS")) as Passed by Node| eval failedratio=(Failed/Total)*100|eval passedratio=(Passed/Total)*100|table Node passedratio Total|append [search source="V.txt" sourcetype="wip_report_analysis" | rex field=X_pin "(?P<Node>[0-9A-Z]+-[0-9A-Z]+-[0-9A-Z]+)"|stats count As Total count(eval(Status="HIGH")) as Failed count(eval(Status="PASS")) as Passed by Node| eval failedratio=(Failed/Total)*100|eval passedratio=(Passed/Total)*100|table Node passedratio Total]|sort +passedratio|rename Node AS "Connector" passedratio as "PASS Ratio" Total as "Testing Times"
