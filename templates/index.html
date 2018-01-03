@@ -1,13 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-这是主页
-<p><a href={{url_for('result')}}>PINs with HIGH result</a>
-</p>
+{% extends "layout.html" %}
 
-</body>
-</html>
+{% block head %}
+<title>WIT 主页</title>
+{% endblock %}
+
+
+{% block functionlist %}
+<div id="functionlist"><h2>功能列表</h2>
+<ul>
+    <li><a href="{{ url_for('jsw') }}">导入JSW文件</a></li>
+    <li><a href="{{ url_for('dit_mco') }}">导入DIT-MCO报告</a></li>
+    <li><a href="{{ url_for('piebar') }}">总体导通率</a></li>
+    <li><a href="{{ url_for('linebar') }}">故障率分布</a></li>
+    <li><a href="{{ url_for('result') }}">未通过PIN清单</a> </li>
+    <li><a href="{{ url_for('prog') }}">导出测试程序</a></li>
+</ul>
+</div>
+{% endblock %}

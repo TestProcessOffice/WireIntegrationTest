@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>总体导通率</title>
+    <script src="{{ url_for('static', filename='echarts/echarts.js') }}"> </script>
+</head>
+<p>
+ <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '总体导通率'
+            },
+            series: [{
+                name: '状态',
+                type: 'pie',
+                radius:'55%',
+                data: []
+            }]
+        };
+
+        option.series[0].data=[
+                    {value:235,name:'通过'},
+                    {value:274,name:'未过'},
+                    ]
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+</p>
+<p>开发中......</p>
+</body>
+</html>

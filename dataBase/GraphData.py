@@ -142,7 +142,14 @@ class Neo4j(object):
         Neo4j._graph.delete_all()
     
     def stats(self):
-        pass
+        query = '''
+                MATCH (pin1:pin)-[rel]->(pin2:pin)
+                WHERE rel.status='HIGH'
+                
+                WHERE r
+                '''
+        data = Neo4j._graph.run(query).data()
+        return data
     
     def prog(self):
         query='''
