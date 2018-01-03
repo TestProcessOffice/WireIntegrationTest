@@ -8,7 +8,12 @@ from py2neo import Graph,Node,Relationship
 import numpy as np
 
 class Neo4j(object):
-    _graph = Graph()
+    try:
+        _graph = Graph()
+    except:
+        print("Please check database Neo4j!")
+        exit(-1);
+
     _lables=["pin","continuity","insulation"]
     _jsw_columns = [u'connector1', u'pin1', u'connector2', \
                         u'pin2', u'chapter',u'testType']
