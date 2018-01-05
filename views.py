@@ -9,7 +9,7 @@ from models import FindFiles, Pgv, Jsw, Format, View
 from flask import Flask, render_template, url_for
 
 app = Flask("__name__")
-
+db = Neo4j()
 
 @app.route("/")
 def root():
@@ -28,12 +28,30 @@ def dit_mco():
 
 @app.route("/piebar")
 def piebar():
-    return render_template('piebar.html')
+    data = db.stats()
+    highvalue, passvalue=0,0
+    for item in data:
+        if item.get(u'name', 'NULL') == u'HIGH':
+            highvalue = item.get(u'value')
+        if item.get(u'name', 'NULL') == u'PASS':
+            passvalue = item.get(u'value')
+    data = passvalue, highvalue
+    return render_template('piebar.html', data=data)
 
 
 @app.route('/linebar')
 def linebar():
-    return render_template("linebar.html")
+    data = db.high_connector()
+    fmt = Format(data)
+    data = fmt.to_DF()
+    value, name = data[u'value'],data[u'name']
+    #value = [i for i in range(204)]
+    value = [int(x) for x in value]
+    name = [str(x) for x in name]
+    #name = ['A-34N-P1', 'D-274D-P2', 'P-3316-P1', 'P-3316-P2', 'U-281-P2']
+    data = value, name
+    print(data)
+    return render_template("linebar.html",data=data)
 
 @app.route('/prog')
 def prog():
@@ -41,7 +59,6 @@ def prog():
 
 @app.route("/result")
 def result():
-    db = Neo4j()
     data = db.prog()
     fmt = Format(data)
     data = fmt.to_DF()

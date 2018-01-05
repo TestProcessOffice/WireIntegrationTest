@@ -32,18 +32,18 @@
             }]
         };
 
-        option.legend.data=['HIGH number']
-        option.xAxis.data =["C1","C2","C3","C4","C5","C6"]
-        option.series[0].name='HIGH number'
-        option.series[0].data=[5, 20, 36, 10, 10, 20]
-
+        option.legend.data = ['HIGH number']
+        option.xAxis.data = ['A-34N-P1', 'D-274D-P2', 'P-3316-P1', 'P-3316-P2', 'U-281-P2']
+        option.xAxis.data = []
+        option.series[0].name = 'HIGH number'
+        //option.series[0].data = [5, 20, 36, 10, 10, 20]
+        option.series[0].data = {{ data[0] }}
 
         // 使用刚指定的配置项和数据显示图表。
-
         myChart.setOption(option);
     </script>
 </p>
 <p>开发中......</p>
-
+{{ data[1] }}
 </body>
 </html>

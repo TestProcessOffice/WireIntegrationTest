@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Dec 19 10:40:53 2017
+@author: jayHan
 
-@author: COMAC
+Modified 2018.1.4,15:44pm
+function demonstration
+
 """
 from py2neo import Graph,Node,Relationship
 import numpy as np
@@ -140,17 +143,34 @@ class Neo4j(object):
     
     def clear(self):
         Neo4j._graph.delete_all()
+
+    def high_connector(self):
+        query ='''
+        match (n1)-[rel1:continuity|insulation]-(n2)
+        where rel1.status='HIGH'
+        return count(rel1) as value,n1.connectorName as name  
+        order by value desc    
+        '''
+        data3 = Neo4j._graph.run(query).data()
+        print(data3)
+        return data3
     
     def stats(self):
         query = '''
-                MATCH (pin1:pin)-[rel]->(pin2:pin)
-                WHERE rel.status='HIGH'
-                
-                WHERE r
-                '''
-        data = Neo4j._graph.run(query).data()
-        return data
-    
+        match(n1)-[rel1:continuity|insulation]-(n2)
+        where rel1.status='HIGH'
+        return count(rel1) as value, rel1.status as name
+        '''
+        data1 = Neo4j._graph.run(query).data()
+        query = '''
+        match(n1)-[rel1:continuity|insulation]-(n2)
+        where rel1.status='PASS'
+        return count(rel1) as value,rel1.status as name
+        '''
+        data2 = Neo4j._graph.run(query).data()
+        data1.extend(data2)
+        return data1
+
     def prog(self):
         query='''
         MATCH (pin1:pin)-[rel]->(pin2:pin)

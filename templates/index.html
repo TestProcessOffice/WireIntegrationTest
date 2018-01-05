@@ -2,8 +2,8 @@
 
 {% block head %}
 <title>WIT 主页</title>
+<link rel="stylesheet" href="{{ url_for('static',filename='css/login.css') }}">
 {% endblock %}
-
 
 {% block functionlist %}
 <div id="functionlist"><h2>功能列表</h2>
@@ -16,4 +16,4 @@
     <li><a href="{{ url_for('prog') }}">导出测试程序</a></li>
 </ul>
 </div>
-{% endblock %}
+{% endblock %}r

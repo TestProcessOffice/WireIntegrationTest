@@ -5,6 +5,8 @@
     <title>总体导通率</title>
     <script src="{{ url_for('static', filename='echarts/echarts.js') }}"> </script>
 </head>
+<body>
+<p>开发中......</p>
 <p>
  <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width: 600px;height:400px;"></div>
@@ -24,16 +26,11 @@
                 data: []
             }]
         };
-
-        option.series[0].data=[
-                    {value:235,name:'通过'},
-                    {value:274,name:'未过'},
-                    ]
-
+        option.series[0].data=[{name:'PASS',value:{{ data[0] }} },{name:'HIGH',value:{{ data[1] }} }]
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
     </script>
 </p>
-<p>开发中......</p>
+
 </body>
 </html>
