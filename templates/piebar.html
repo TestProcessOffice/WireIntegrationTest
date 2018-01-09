@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends "layout.html" %}
+{% block head %}
     <title>总体导通率</title>
     <script src="{{ url_for('static', filename='echarts/echarts.js') }}"> </script>
-</head>
-<body>
+{% endblock %}
+
+{% block display %}
 <p>开发中......</p>
 <p>
  <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
@@ -31,6 +30,5 @@
         myChart.setOption(option);
     </script>
 </p>
+{% endblock %}
 
-</body>
-</html>

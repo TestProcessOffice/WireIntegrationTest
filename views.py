@@ -65,7 +65,7 @@ def result():
     print(data)
     out = View(data)
     out.to_html(path="./templates/result.html")
-    return render_template("result.html", data=data)
+    return render_template("highPin.html")
 
 
 @app.route("/prog/<something>")

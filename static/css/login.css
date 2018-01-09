@@ -1,4 +1,3 @@
-#functionlist {width:260px; background-color: aquamarine;padding: 15px;}
-#functionlist ul li a{text-decoration: none;color: blue;font-family: 华文楷体;font-size: 1.2em;line-height: 1.8em;display: block;}
-#functionlist ul li a:hover{background-color: blue;color: aquamarine}
-
+#functionlist {width:8em;background-color: aquamarine;padding: 0px;}
+#functionlist ul li a{width:8em;text-decoration: none;color: blue;font-family: 华文楷体;font-size: 1.2em;line-height: 1.8em;display: block;}
+#functionlist ul li a:hover{background-color: blue;color: aquamarine;}

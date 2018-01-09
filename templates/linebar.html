@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends "layout.html" %}
+{% block head %}
     <title>故障率分布</title>
     <script src="{{ url_for('static', filename='echarts/echarts.js') }}"> </script>
-</head>
+{% endblock %}
+
+{% block display %}
 <p>
  <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width: 600px;height:400px;"></div>
@@ -45,5 +45,5 @@
 </p>
 <p>开发中......</p>
 {{ data[1] }}
-</body>
-</html>
+{% endblock %}
+
