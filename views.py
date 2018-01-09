@@ -68,4 +68,6 @@ def result():
     return render_template("result.html", data=data)
 
 
-
+@app.route("/prog/<something>")
+def prog_database():
+    return 'Execute operation: {0} '.format(something)
