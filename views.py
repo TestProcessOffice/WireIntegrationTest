@@ -67,6 +67,9 @@ def result():
     out.to_html(path="./templates/result.html")
     return render_template("highPin.html")
 
+@app.route("/resulthtml")
+def resulthtml():
+    return render_template("result.html")
 
 @app.route("/prog/<something>")
 def prog_database():
