@@ -258,7 +258,7 @@ class Format(object):
             fp.write(str_line)
 
 
-class View(object):
+class Save(object):
     keys = (u'chapter', u'pin1', u'pin2')
     col_name = (u'No', u'测试程序', u'章节号', u'备注')
 

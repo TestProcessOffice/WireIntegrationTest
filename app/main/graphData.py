@@ -148,13 +148,22 @@ class Neo4j(object):
         query ='''
         match (n1)-[rel1:continuity|insulation]-(n2)
         where rel1.status='HIGH'
-        return count(rel1) as value,n1.connectorName as name  
+        return count(rel1) as value,n1.connectorName as name 
         order by value desc    
         '''
         data3 = Neo4j._graph.run(query).data()
-        print(data3)
         return data3
-    
+
+    def new_prog(self,*args,**kwargs):
+        query='''
+        MATCH (pin1:pin)-[rel:{testType}]->(pin2:pin)
+        WHERE rel.status='HIGH'
+        RETURN pin1.fullName AS PIN1,pin2.fullName AS PIN2,rel.chapter as CHAPTER
+        ORDER BY rel.sequence
+        '''.format(*args,**kwargs)
+        data = Neo4j._graph.run(query).data()
+        return data
+
     def stats(self):
         query = '''
         match(n1)-[rel1:continuity|insulation]-(n2)
@@ -180,7 +189,4 @@ class Neo4j(object):
         '''
         data = Neo4j._graph.run(query).data()
         return data
-    
 
-
-    

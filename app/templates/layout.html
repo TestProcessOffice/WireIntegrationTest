@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% block head %}
-    {% endblock %}
-    <style>
-    nav  {width:860px; height:2em; background-color: #0000ff;padding: 10px;}
+    <style>nav  {width:860px; height:2em; background-color: #0000ff;padding: 10px;}
     nav  a{color: #ffffff; font: 1.2em "Microsoft YaHei";padding:1em;text-decoration: none}
     nav  a:hover{background: #ffffff;color: #0000ff}
     </style>
+    {% block head %}
+    {% endblock %}
 </head>
 <body>
+
+<h2>全机电缆导通完整性测试 v0.02</h2>
 <nav >
     <a href="{{ url_for('root')}}"> 首页</a>
-    <a href="#"> 全机导通测试</a>
-    <a href="#"> 全机导通测试</a>
+    <a href="#"> 设备检查</a>
+    <a href="#"> 软件设置</a>
     <a href="#"> 帮助说明</a>
     <a href="#"> 登陆/退出</a>
 </nav>

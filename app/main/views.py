@@ -5,7 +5,7 @@ Created on Tue Dec 19 13:18:40 2017
 @author: COMAC
 """
 from graphData import Neo4j
-from models import FindFiles, Pgv, Jsw, Format, View
+from models import FindFiles, Pgv, Jsw, Format, Save
 from flask import Flask, render_template, url_for
 
 app = Flask("__name__")
@@ -55,15 +55,18 @@ def linebar():
 
 @app.route('/prog')
 def prog():
+    data1 = db.new_prog(testType='continuity')
+    data1 = Format(data1).to_DF()
+    data2 = db.new_prog(testType='insulation')
+    data2 = Format(data2).to_DF()
+
     return render_template("prog.html")
 
 @app.route("/result")
 def result():
     data = db.prog()
-    fmt = Format(data)
-    data = fmt.to_DF()
-    print(data)
-    out = View(data)
+    data = Format(data).to_DF()
+    out = Save(data)
     out.to_html(path="./templates/result.html")
     return render_template("highPin.html")
 
