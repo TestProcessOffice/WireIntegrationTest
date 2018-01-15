@@ -142,7 +142,7 @@ class Format(object):
     def __init__(self, data):
         self._data = data
 
-    def to_DF(self):
+    def jsons_DF(self):
         self._data = pd.DataFrame(self._data)
         return self._data
 

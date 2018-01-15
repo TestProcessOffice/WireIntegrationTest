@@ -25,7 +25,7 @@
                 data: []
             }]
         };
-        option.series[0].data=[{name:'PASS',value:{{ data[0] }} },{name:'HIGH',value:{{ data[1] }} }]
+        option.series[0].data=[{name:'PASS',value:{{ data['PASS'] }} },{name:'HIGH',value:{{ data['HIGH'] }} }]
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
     </script>

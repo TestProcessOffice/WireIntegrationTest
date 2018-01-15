@@ -9,6 +9,7 @@ function demonstration
 """
 from py2neo import Graph,Node,Relationship
 import numpy as np
+import pandas as pd
 
 class Neo4j(object):
     try:
@@ -18,13 +19,16 @@ class Neo4j(object):
         exit(-1);
 
     _lables=["pin","continuity","insulation"]
-    _jsw_columns = [u'connector1', u'pin1', u'connector2', \
-                        u'pin2', u'chapter',u'testType']
-    _pgv_columns = ["connector1","pin1","connector2","pin2","testType","status","value","unit","addr1","addr2"] 
+    _jsw_columns = [u'connector1', u'pin1', u'connector2', u'pin2', u'chapter',u'testType']
+    _pgv_columns = [u'connector1',u'pin1',u'connector2',u'pin2',u'testType',u'status',u'value',u'unit',u'addr1',u'addr2']
     def jsw_upload(self,info):
+        '''
+        upload new node and relationship to data base
+        :param info: DataFrame with column name = _jsw_columns
+        :return: True/False
+        '''
         col = info.columns
-        if not reduce(lambda x,y:x and y,col==[u'connector1', u'pin1', u'connector2', \
-                        u'pin2', u'chapter',u'testType']):
+        if not reduce(lambda x,y:x and y,col==Neo4j._jsw_columns):
             print("improper data format, please check!")
             return False
         try:
@@ -50,15 +54,19 @@ class Neo4j(object):
                     pinIndex=pin1,fullName=fullName1)
             node2 =Node(lable1,connectorName=cntName2,\
                     pinIndex=pin2,fullName=fullName2)        
-            rel = Relationship(node1,lable2,node2,\
-                    chapter=chapter,status='NULL',times=0,sequence= r)
+            rel = Relationship(node1, lable2, node2, \
+                    chapter=chapter, status='NULL',times=0,sequence= r)
             Neo4j._graph.merge(rel)
         return True   
         
     def pgv_upload(self,info):
+        '''
+        modify property of existing relationship, or upload new node and relationship
+        :param info:DataFrame with column name = _pvg_columns
+        :return:False/True
+        '''
         col = info.columns
-        colName=["connector1","pin1","connector2","pin2","testType","status","value","unit","addr1","addr2"]
-        if not reduce(lambda x,y:x and y,col==colName):
+        if not reduce(lambda x,y:x and y,col==Neo4j._pgv_columns):
             print("improper data format, please check!")
             return False
         try:
@@ -105,6 +113,11 @@ class Neo4j(object):
     
 
     def pgv_update(self,info):
+        '''
+        Only modify property of existing relationship
+        :param info:DataFrame with column name = _pvg_columns
+        :return:False/True
+        '''
         col = info.columns
         colName=["connector1","pin1","connector2","pin2","testType","status","value","unit","addr1","addr2"]
         if not reduce(lambda x,y:x and y,col==colName):
@@ -144,49 +157,66 @@ class Neo4j(object):
     def clear(self):
         Neo4j._graph.delete_all()
 
-    def high_connector(self):
-        query ='''
-        match (n1)-[rel1:continuity|insulation]-(n2)
-        where rel1.status='HIGH'
-        return count(rel1) as value,n1.connectorName as name 
-        order by value desc    
-        '''
-        data3 = Neo4j._graph.run(query).data()
-        return data3
-
-    def new_prog(self,*args,**kwargs):
-        query='''
-        MATCH (pin1:pin)-[rel:{testType}]->(pin2:pin)
-        WHERE rel.status='HIGH'
-        RETURN pin1.fullName AS PIN1,pin2.fullName AS PIN2,rel.chapter as CHAPTER
-        ORDER BY rel.sequence
-        '''.format(*args,**kwargs)
-        data = Neo4j._graph.run(query).data()
-        return data
 
     def stats(self):
+        '''
+        stats. total number of 'HIGH','PASS' and 'NULL' status of test relationship
+        :return: {"HIGH":n,"PASS":m,"NULL":p}
+        '''
+        result = {"HIGH":0,"PASS":0,"NULL":0}
         query = '''
         match(n1)-[rel1:continuity|insulation]-(n2)
         where rel1.status='HIGH'
-        return count(rel1) as value, rel1.status as name
+        return count(rel1) as NUMBER
         '''
         data1 = Neo4j._graph.run(query).data()
+        print(data1)
+        result["HIGH"] = data1[0]['NUMBER']
         query = '''
         match(n1)-[rel1:continuity|insulation]-(n2)
         where rel1.status='PASS'
-        return count(rel1) as value,rel1.status as name
+        return count(rel1) as NUMBER
         '''
         data2 = Neo4j._graph.run(query).data()
-        data1.extend(data2)
-        return data1
+        result["PASS"] = data2[0]['NUMBER']
+        query = '''
+        match(n1)-[rel1:continuity|insulation]-(n2)
+        where rel1.status='NULL'
+        return count(rel1) as NUMBER
+        '''
+        data3 = Neo4j._graph.run(query).data()
+        result["NULL"] = data3[0]['NUMBER']
+        return result
 
-    def prog(self):
+    def prog(self, label):
+        '''
+        :label: label type of relationship,eg. continuity,insulation
+        :return: (json objects)
+        '''
         query='''
-        MATCH (pin1:pin)-[rel]->(pin2:pin)
+        MATCH (pin1:pin)-[rel:{label}]->(pin2:pin)
         WHERE rel.status='HIGH'
         RETURN pin1.fullName AS PIN1,pin2.fullName AS PIN2,rel.chapter as CHAPTER
         ORDER BY rel.sequence
         '''
+        query = query.format(label=label)
         data = Neo4j._graph.run(query).data()
+
         return data
 
+    def connector_status_dist(self):
+        '''
+
+        :return: json objects
+        '''
+        query = '''
+        MATCH (pin1:pin)-[rel]->(pin2:pin)
+        WHERE rel.status='HIGH'
+        WITH pin1.connectorName as cnm
+        MATCH (pin3:pin)-[rel2]->(pin4:pin)
+        WHERE pin3.connectorName = cnm
+        RETURN count(rel2.status) as NUMBER,rel2.status as STATUS,cnm as CONNECTOR
+        '''
+        data = Neo4j._graph.run(query).data()
+
+        return data
