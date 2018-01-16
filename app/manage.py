@@ -7,5 +7,5 @@ Created on Thu Nov 23 12:47:47 2017
 from main import app
 import config
 app.config.from_object(config)
-app.run()
+app.run(host='0.0.0.0')
 
