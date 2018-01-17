@@ -6,7 +6,7 @@ Created on Tue Dec 19 13:18:40 2017
 """
 from graphData import Neo4j
 from models import FindFiles, Pgv, Jsw, Format, Save
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for,request,redirect
 
 app = Flask("__name__")
 db = Neo4j()
@@ -59,6 +59,7 @@ def result():
     out.to_html(path="./templates/result.html")
     return render_template("highPin.html")
 
+
 @app.route("/resulthtml")
 def resulthtml():
     return render_template("result.html")
@@ -66,3 +67,12 @@ def resulthtml():
 @app.route("/prog/<something>")
 def prog_database():
     return 'Execute operation: {0} '.format(something)
+
+
+@app.route("/upload",methods=['POST','GET'])
+def upload():
+    res = request.form["filename"]
+    print(res)
+    jsw = Jsw(res)
+    print(jsw.info_auto)
+    return render_template('upload.html',res=res)

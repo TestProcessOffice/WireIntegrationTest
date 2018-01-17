@@ -1,7 +1,0 @@
-//update relationship
-MATCH p1=(:PIN)-[rel1:F]->(:PIN)
-MATCH p2=(:PIN)-[rel2:C]->(:PIN)
-WITH p1,p2,rel1,rel2,rel1.times as times1,rel2.times as times2
-SET rel1.status = "HIGH",rel1.times=times1+1
-SET rel2.status = "PASS",rel2.times=times2+1
-return p1,p2

@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
 {% block display %}
-<br><br>
-<input type="text" name="filename" value="file name">
+<form  action={{ url_for('upload')}} method="post">
+<input type="file" id="Myfile" name="filename">
 <input type="submit" value="提交">
+</form>
+
 <p>开发中...</p>
+
 {% endblock %}
