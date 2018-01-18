@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block display %}
+<form id="jsw" action="{{ url_for('jsw') }}" method="post">
+<input type="file"  name="jswfile" value="jsw文件">
+<input type="submit" value="提交">
+</form>
+<form id="ditmco" action={{ url_for('ditmco') }} method="post">
+<input type="file" id="Myfile2" name="ditmcofile" value="pgv文件">
+<input type="submit" value="提交">
+</form>
+
+<form id="clear" action={{ url_for('clear') }} method="post">
+<input type="submit" value="清除数据">
+</form>
+
+
+{% for message in get_flashed_messages() %}
+<div class="flash">{{ message }}</div>
+{% endfor %}
+
+<p>开发中...</p>
+
+{% endblock %}

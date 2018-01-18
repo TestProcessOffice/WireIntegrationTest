@@ -10,8 +10,8 @@
 <ul>
     <li>
      <ul><h3>测试准备</h3>
-         <li> <a href="{{ url_for('jsw') }}">自动生成测试程序</a> </li>
-         <li> <a href="#">手动生成测试程序</a> </li>
+         <li> <a href="#">自动生成测试程序</a> </li>
+         <li> <a href="{{ url_for('graph_data') }}">手动生成测试程序</a> </li>
          <li> <a href="{{ url_for('prog') }}">导出测试程序</a> </li>
      </ul>
      </li>
@@ -36,7 +36,7 @@
     <ul><h3>看板</h3>
     <li><a href="{{ url_for('piebar') }}">总体导通率</a></li>
     <li><a href="{{ url_for('linebar') }}">故障率分布</a></li>
-    <li><a href="{{ url_for('result') }}">未通过PIN清单</a> </li>
+    <li><a href="{{ url_for('highs') }}">未通过PIN清单</a> </li>
     </ul>
     </li>
 </ul>

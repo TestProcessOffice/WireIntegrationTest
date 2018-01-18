@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h1 id="h1tag"> old h1 text</h1>
+
+</div>
+</body>
+</html>
+<script>
+    var obj = document.getElementById('h1tag')
+    alert(obj.innerHTML)
+    obj.onclick = function(){
+    var str = obj.innerHTML
+    obj.innerHTML = str[3]
+
+    }
+</script>

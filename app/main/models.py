@@ -45,9 +45,9 @@ class Jsw:
         self._process()
         
     def _process(self):
-        data_in = pd.read_excel(self._fin, sheetname=Jsw.sheet_in[0])
+        data_in = pd.read_excel(self._fin, sheet_name=Jsw.sheet_in[0])
         data_in = data_in.fillna('')
-        data_in2 = pd.read_excel(self._fin, sheetname=Jsw.sheet_in[1])
+        data_in2 = pd.read_excel(self._fin, sheet_name=Jsw.sheet_in[1])
         data_in2 = data_in2.fillna('')
         data_in, data_tb = self.info_split(data_in)
         data_in2, data_tb2 = self.info_split(data_in2)
@@ -95,7 +95,7 @@ class Pgv:
     info=[connector1,pin1,connector2,pin2,chapter,\
     testType,status,value,unit,addr1,addr2]
     '''
-    columns = ["connector1", "pin1", "connector2", "pin2", "testType", "status", "value", "unit", "pin1_addr", "pin1_addr"]
+    columns = ["connector1", "pin1", "connector2", "pin2", "testType", "status", "value", "unit", "pin1_addr", "pin2_addr"]
     typedic = {'FC': 'insulation', 'CC': 'continuity'}
 
     def __init__(self, file_in):

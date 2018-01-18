@@ -40,6 +40,7 @@ class Neo4j(object):
             return False
         row,col = info.shape
         for r in range(row):
+            print(info.iloc[r])
             cntName1,pin1,cntName2,pin2,chapter,testType = info.iloc[r]
             lable1,lable2 = "pin",testType
             if pin1 is np.nan or not pin1:
@@ -50,12 +51,10 @@ class Neo4j(object):
                fullName2 = unicode(cntName2)
             else:
                fullName2 = unicode(cntName2)+'-'+unicode(pin2)
-            node1 =Node(lable1,connectorName=cntName1,\
-                    pinIndex=pin1,fullName=fullName1)
-            node2 =Node(lable1,connectorName=cntName2,\
-                    pinIndex=pin2,fullName=fullName2)        
-            rel = Relationship(node1, lable2, node2, \
-                    chapter=chapter, status='NULL',times=0,sequence= r)
+            node1 =Node(lable1,connectorName=cntName1,pinIndex=pin1,fullName=fullName1)
+            node2 =Node(lable1,connectorName=cntName2,pinIndex=pin2,fullName=fullName2)
+            rel = Relationship(node1, lable2, node2, chapter=chapter, status='NULL',times=0,sequence= r)
+
             Neo4j._graph.merge(rel)
         return True   
         
@@ -119,7 +118,7 @@ class Neo4j(object):
         :return:False/True
         '''
         col = info.columns
-        colName=["connector1","pin1","connector2","pin2","testType","status","value","unit","addr1","addr2"]
+        colName=["connector1","pin1","connector2","pin2","testType","status","value","unit","pin1_addr","pin2_addr"]
         if not reduce(lambda x,y:x and y,col==colName):
             print("improper data format, please check!")
             return False
@@ -148,9 +147,10 @@ class Neo4j(object):
             SET rel.times = t+1,rel.status = {status},rel.value = {value},rel.unit = {unit},pin1.addr= {addr1},pin2.addr = {addr2}
             RETURN pin1,rel,pin2
             '''
-            Neo4j._graph.run(query,name1=fullName1,name2=fullName2,\
+            data = Neo4j._graph.run(query,name1=fullName1,name2=fullName2,\
                                  status=status,value=val,unit=unit,addr1=addr1,addr2=addr2)
-
+            print(fullName1,fullName2,status,val,unit,addr1,addr2)
+            print(data)
         return True
     
     
@@ -218,5 +218,7 @@ class Neo4j(object):
         RETURN count(rel2.status) as NUMBER,rel2.status as STATUS,cnm as CONNECTOR
         '''
         data = Neo4j._graph.run(query).data()
+        if not data:
+            data = [{'NUMBER':0, 'STATUS':'NULL', 'CONNECTOR':None}]
 
         return data
