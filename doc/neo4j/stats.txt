@@ -1,0 +1,17 @@
+//stats
+Create(Node1:Cstats),(Node2:Fstats)
+
+MATCH p1= ()-[rel1:F]->()
+with count(rel1) as num
+set Node1.total=num
+with ount(rel1) as num
+where rel1.status ="PASS"
+set Node1.pass = num
+
+MATCH p1= ()-[rel1:C]->()
+with count(rel1) as num
+set Node2.total=num
+with ount(rel1) as num
+where  rel1.status ="PASS"
+set Node2.pass = num
+return Node1,Node2
