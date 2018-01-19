@@ -46,32 +46,53 @@ class Jsw:
         
     def _process(self):
         data_in = pd.read_excel(self._fin, sheet_name=Jsw.sheet_in[0])
-        data_in = data_in.fillna('')
+        data_in= self._strcleanning(data_in)
         data_in2 = pd.read_excel(self._fin, sheet_name=Jsw.sheet_in[1])
-        data_in2 = data_in2.fillna('')
+        data_in2 = self._strcleanning(data_in2)
+        # print("data_in after strip", data_in.loc[0][0])
         data_in, data_tb = self.info_split(data_in)
         data_in2, data_tb2 = self.info_split(data_in2)
         data_in['testType'], data_tb['testType'] = Jsw.type[0], Jsw.type[2]
         data_in2['testType'], data_tb2['testType'] = Jsw.type[0], Jsw.type[2]
+        #print("data_in", data_in)
+        #print("data_in2", data_in2)
+        # print("auto", self.info_auto)
         self.info_auto = data_in.append(data_in2, ignore_index=True)
         self.info_auto.columns = Jsw.columns
         self.info_tb = data_tb.append(data_tb2, ignore_index=True)
         self.info_tb.columns = Jsw.columns
-             
-    def _hasTB(self, row_data):
+
+    def _strcleanning(self,pd):
+        pd = pd.fillna('')
+        row, col = pd.shape
+        # print("before", pd.loc[0][0])
+        for i in range(row):
+            pd.loc[i] = [unicode(x).replace(' ','') for x in pd.loc[i]]
+        # print("after", pd.loc[0][0])
+        return pd
+
+    def _hasTB(self,row_data):
         for data in row_data:
-            if u"TB" in unicode(data):
+            if u"TB" in data:
                 return True
         return False
     
     def _valid(self, row_data):
+        '''
+        cnt1,cnt2 must be a combination of 0-9,a-z,A-Z,'-'
+        '''
         cnt1 = row_data[0]
         cnt2 = row_data[3]
-        mat1 = re.match("[\w-]+", unicode(cnt1))
-        mat2 = re.match("[\w-]+", unicode(cnt2))
-        
+        mat1 = re.match("[\w-]+", cnt1)
+        mat2 = re.match("[\w-]+", cnt2)
+        #print(cnt1,cnt2,mat1,mat2)
         if mat1 and mat2 and cnt1 == mat1.group() and cnt2 == mat2.group():
+            # print("valied:",cnt1,cnt2)
             return True
+        # if mat1:
+        #     print("invalid1:",cnt1,mat1.group())
+        # if mat2:
+        #     print("invalid2:",cnt2,mat2.group())
         return False
         
     def info_split(self,df):

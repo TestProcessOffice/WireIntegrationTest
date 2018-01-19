@@ -24,8 +24,9 @@ def jsw():
     res = request.form["jswfile"]
     print(res)
     jsw = Jsw(res)
+    #print(jsw.info_auto)
+    # print(jsw.info_tb)
     db.jsw_upload(jsw.info_auto)
-    print(jsw.info_auto)
     flash("jsw file been uploaded")
     return render_template("graph_data.html")
 

@@ -40,7 +40,7 @@ class Neo4j(object):
             return False
         row,col = info.shape
         for r in range(row):
-            print(info.iloc[r])
+            print("{0}/{1}".format(r+1,row))
             cntName1,pin1,cntName2,pin2,chapter,testType = info.iloc[r]
             lable1,lable2 = "pin",testType
             if pin1 is np.nan or not pin1:
@@ -58,57 +58,57 @@ class Neo4j(object):
             Neo4j._graph.merge(rel)
         return True   
         
-    def pgv_upload(self,info):
-        '''
-        modify property of existing relationship, or upload new node and relationship
-        :param info:DataFrame with column name = _pvg_columns
-        :return:False/True
-        '''
-        col = info.columns
-        if not reduce(lambda x,y:x and y,col==Neo4j._pgv_columns):
-            print("improper data format, please check!")
-            return False
-        try:
-    #       ping database?
-            print("to be ")
-        except:
-            print("Please check connection of Neo4j Database!")
-            return False
-        row,col = info.shape
-        for r in range(row):
-            cntName1,pin1,cntName2,pin2,testType,status,val,unit,addr1,addr2 = info.iloc[r]
-            if pin1 is np.nan or not pin1:
-               fullName1 = unicode(cntName1)
-            else:
-               fullName1 = unicode(cntName1)+'-'+unicode(pin1)
-            if pin2 is np.nan or not pin2:
-               fullName2 = unicode(cntName2)
-            else:
-               fullName2 = unicode(cntName2)+'-'+unicode(pin2)
-
-            s1='''
-            MERGE (node1:pin {fullName:{name1}})
-            ON CREATE set node1.connectorName={cnt1},node1.pinIndex={pin1},node1.addr={addr1}
-            ON MATCH set node1.addr = {addr1}
-            MERGE (node2:pin {fullName:{name2}})
-            On CREATE set node2.connectorName={cnt2},node1.pinIndex={pin2},node1.addr={addr2}
-            ON MATCH set node2.addr = {addr2}
-            '''
-            s2='''
-            MERGE (node1)-[rel:{testType}]->(node2)
-            '''
-            s3='''
-            ON CREATE SET rel.times=0,rel.status={status},rel.value={value},rel.unit ={unit}
-            WITH rel,rel.times as t
-            SET rel.times = t+1,rel.status={status},rel.value={value},rel.unit ={unit}
-            '''
-            s2 = s2.format(testType=testType)
-            query =s1+s2+s3
-            
-            Neo4j._graph.run(query,testType=testType,cnt1=cntName1,pin1=pin1,name1=fullName1,\
-                             cnt2=cntName2,pin2=pin2,name2=fullName2,\
-                             status=status,value=val,unit=unit,addr1=addr1,addr2=addr2)
-        return True
+    # def pgv_upload(self,info):
+    #     '''
+    #     modify property of existing relationship, or upload new node and relationship
+    #     :param info:DataFrame with column name = _pvg_columns
+    #     :return:False/True
+    #     '''
+    #     col = info.columns
+    #     if not reduce(lambda x,y:x and y,col==Neo4j._pgv_columns):
+    #         print("improper data format, please check!")
+    #         return False
+    #     try:
+    # #       ping database?
+    #         print("to be ")
+    #     except:
+    #         print("Please check connection of Neo4j Database!")
+    #         return False
+    #     row,col = info.shape
+    #     for r in range(row):
+    #         cntName1,pin1,cntName2,pin2,testType,status,val,unit,addr1,addr2 = info.iloc[r]
+    #         if pin1 is np.nan or not pin1:
+    #            fullName1 = unicode(cntName1)
+    #         else:
+    #            fullName1 = unicode(cntName1)+'-'+unicode(pin1)
+    #         if pin2 is np.nan or not pin2:
+    #            fullName2 = unicode(cntName2)
+    #         else:
+    #            fullName2 = unicode(cntName2)+'-'+unicode(pin2)
+    #
+    #         s1='''
+    #         MERGE (node1:pin {fullName:{name1}})
+    #         ON CREATE set node1.connectorName={cnt1},node1.pinIndex={pin1},node1.addr={addr1}
+    #         ON MATCH set node1.addr = {addr1}
+    #         MERGE (node2:pin {fullName:{name2}})
+    #         On CREATE set node2.connectorName={cnt2},node1.pinIndex={pin2},node1.addr={addr2}
+    #         ON MATCH set node2.addr = {addr2}
+    #         '''
+    #         s2='''
+    #         MERGE (node1)-[rel:{testType}]->(node2)
+    #         '''
+    #         s3='''
+    #         ON CREATE SET rel.times=0,rel.status={status},rel.value={value},rel.unit ={unit}
+    #         WITH rel,rel.times as t
+    #         SET rel.times = t+1,rel.status={status},rel.value={value},rel.unit ={unit}
+    #         '''
+    #         s2 = s2.format(testType=testType)
+    #         query =s1+s2+s3
+    #
+    #         Neo4j._graph.run(query,testType=testType,cnt1=cntName1,pin1=pin1,name1=fullName1,\
+    #                          cnt2=cntName2,pin2=pin2,name2=fullName2,\
+    #                          status=status,value=val,unit=unit,addr1=addr1,addr2=addr2)
+    #     return True
     
 
     def pgv_update(self,info):
