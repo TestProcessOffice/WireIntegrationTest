@@ -34,81 +34,84 @@ class Jsw:
     '''
     info=[connector1,pin1,connector2,pin2,chapter,testType]
     '''
-    columns = ['connector1','pin1','connector2','pin2','chapter','testType']
-    type = ['continuity','insulation','tb']
+    columns = ['connector1','pin1','connector2','pin2','chapter','pin1Type','pin2Type']
+    test_type = ['continuity','insulation']
     sheet_in = [u'连续性测试表', u'接地线导通测试表']
-    sheet_out = [u'连续性测试程序', u'对地测试程序', u'TB']
+    pin_type = ['auto','tb','nap']
 
     def __init__(self, fin):
         self._fin = fin
-        self.info_auto, self.info_tb = None, None
+        self.info_pv, self.info_g = None, None
         self._process()
         
     def _process(self):
         data_in = pd.read_excel(self._fin, sheet_name=Jsw.sheet_in[0])
-        data_in= self._strcleanning(data_in)
+        data_in = self._strcleanning(data_in)
         data_in2 = pd.read_excel(self._fin, sheet_name=Jsw.sheet_in[1])
         data_in2 = self._strcleanning(data_in2)
-        # print("data_in after strip", data_in.loc[0][0])
-        data_in, data_tb = self.info_split(data_in)
-        data_in2, data_tb2 = self.info_split(data_in2)
-        data_in['testType'], data_tb['testType'] = Jsw.type[0], Jsw.type[2]
-        data_in2['testType'], data_tb2['testType'] = Jsw.type[0], Jsw.type[2]
-        #print("data_in", data_in)
-        #print("data_in2", data_in2)
-        # print("auto", self.info_auto)
-        self.info_auto = data_in.append(data_in2, ignore_index=True)
-        self.info_auto.columns = Jsw.columns
-        self.info_tb = data_tb.append(data_tb2, ignore_index=True)
-        self.info_tb.columns = Jsw.columns
+        # print(data_in)
+        # print(data_in2)
+        self.info_pv = self._pinType(data_in)
+        self.info_pv.columns = Jsw.columns
+        self.info_g = self._pinType(data_in2)
+        self.info_g.columns = Jsw.columns
 
     def _strcleanning(self,pd):
+        '''
+        get useful information from pd at column of [0, 1, 3, 4, 6]
+        :param pd:
+        :return:
+        '''
         pd = pd.fillna('')
         row, col = pd.shape
         # print("before", pd.loc[0][0])
         for i in range(row):
             pd.loc[i] = [unicode(x).replace(' ','') for x in pd.loc[i]]
         # print("after", pd.loc[0][0])
+        column = [0, 1, 3, 4, 6]
+        pd = pd.iloc[:, column]
         return pd
 
     def _hasTB(self,row_data):
+        '''
+        whether 'TB' in row elements.upper()
+        :param row_data:
+        :return:
+        '''
         for data in row_data:
-            if u"TB" in data:
+            if u"TB" in data.upper():
                 return True
         return False
     
-    def _valid(self, row_data):
+    def _valid(self, data):
         '''
         cnt1,cnt2 must be a combination of 0-9,a-z,A-Z,'-'
         '''
-        cnt1 = row_data[0]
-        cnt2 = row_data[3]
-        mat1 = re.match("[\w-]+", cnt1)
-        mat2 = re.match("[\w-]+", cnt2)
-        #print(cnt1,cnt2,mat1,mat2)
-        if mat1 and mat2 and cnt1 == mat1.group() and cnt2 == mat2.group():
-            # print("valied:",cnt1,cnt2)
+        mat1 = re.match("[\w-]+", data)
+        if mat1 and data == mat1.group():
             return True
-        # if mat1:
-        #     print("invalid1:",cnt1,mat1.group())
-        # if mat2:
-        #     print("invalid2:",cnt2,mat2.group())
         return False
-        
-    def info_split(self,df):
+
+
+    def _pinType(self,df):
         row, col = df.shape
-        index_tb = []
-        index_auto = [ ]
-        column = [0, 1, 3, 4, 6]
+        pin1Type = []
+        pin2Type = []
         for r in range(row):
-            if self._hasTB(df.iloc[r, :]):
-                index_tb.append(r)
-            elif self._valid(df.iloc[r, :]):
-                index_auto.append(r)
-                                
-        info_tb = df.iloc[index_tb, column]
-        info_auto = df.iloc[index_auto, column]
-        return info_auto, info_tb
+            cnt1,index1,cnt2,index2,chapter = df.iloc[r]
+            pin1Type.append('auto')
+            pin2Type.append('auto')
+            if self._hasTB((cnt1,index1)):
+                pin1Type[r] = 'tb'
+            elif not self._valid(cnt1):
+                pin1Type[r] = 'nap'
+            if self._hasTB((cnt2,index2)):
+                pin2Type[r] = 'tb'
+            elif not self._valid(cnt2):
+                pin2Type[r] = 'nap'
+        df['pin1Type'] = pin1Type
+        df['pin2Type'] = pin2Type
+        return df
 
 
 class Pgv:

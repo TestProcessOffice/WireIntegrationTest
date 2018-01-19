@@ -18,10 +18,11 @@ class Neo4j(object):
         print("Please check database Neo4j!")
         exit(-1);
 
-    _lables=["pin","continuity","insulation"]
-    _jsw_columns = [u'connector1', u'pin1', u'connector2', u'pin2', u'chapter',u'testType']
+    _node_lables = ["pin"]
+    _rel_labeles = ["continuity","insulation"]
+    _jsw_columns = ['connector1','pin1','connector2','pin2','chapter','pin1Type','pin2Type']
     _pgv_columns = [u'connector1',u'pin1',u'connector2',u'pin2',u'testType',u'status',u'value',u'unit',u'addr1',u'addr2']
-    def jsw_upload(self,info):
+    def jsw_upload(self,info,pvg):
         '''
         upload new node and relationship to data base
         :param info: DataFrame with column name = _jsw_columns
@@ -39,10 +40,11 @@ class Neo4j(object):
             print("Please check connection of Neo4j Database!")
             return False
         row,col = info.shape
+        node_gnd = Node(Neo4j._node_lables[0],connectorName='GND', pinIndex='', fullName='GND',pinType='auto')
         for r in range(row):
             print("{0}/{1}".format(r+1,row))
-            cntName1,pin1,cntName2,pin2,chapter,testType = info.iloc[r]
-            lable1,lable2 = "pin",testType
+            cntName1,pin1,cntName2,pin2,chapter,pin1Type,pin2Type = info.iloc[r]
+            lable1,lable2 = Neo4j._rel_labeles[0],Neo4j._rel_labeles[1]
             if pin1 is np.nan or not pin1:
                fullName1 = unicode(cntName1)
             else:
@@ -51,11 +53,21 @@ class Neo4j(object):
                fullName2 = unicode(cntName2)
             else:
                fullName2 = unicode(cntName2)+'-'+unicode(pin2)
-            node1 =Node(lable1,connectorName=cntName1,pinIndex=pin1,fullName=fullName1)
-            node2 =Node(lable1,connectorName=cntName2,pinIndex=pin2,fullName=fullName2)
-            rel = Relationship(node1, lable2, node2, chapter=chapter, status='NULL',times=0,sequence= r)
-
-            Neo4j._graph.merge(rel)
+            node1 =Node(Neo4j._node_lables[0],connectorName=cntName1,pinIndex=pin1,fullName=fullName1,pinType=pin1Type)
+            node2 =Node(Neo4j._node_lables[0],connectorName=cntName2,pinIndex=pin2,fullName=fullName2,pinType=pin2Type)
+            if pvg =='pv':
+                rel1 = Relationship(node1, lable1, node2, chapter=chapter, status='NULL',times=0,sequence= r)
+                Neo4j._graph.merge(node1)
+                Neo4j._graph.merge(node2)
+                Neo4j._graph.merge(node_gnd)
+                Neo4j._graph.merge(rel1)
+                rel2 = Relationship(node1, lable2, node_gnd, chapter=chapter, status='NULL', times=0, sequence=row+r)
+                Neo4j._graph.merge(rel2)
+            elif pvg =='g':
+                Neo4j._graph.merge(node1)
+                Neo4j._graph.merge(node2)
+                rel1 = Relationship(node1, lable1, node2, chapter=chapter, status='NULL', times=0, sequence=r)
+                Neo4j._graph.merge(rel1)
         return True   
         
     # def pgv_upload(self,info):
@@ -149,8 +161,8 @@ class Neo4j(object):
             '''
             data = Neo4j._graph.run(query,name1=fullName1,name2=fullName2,\
                                  status=status,value=val,unit=unit,addr1=addr1,addr2=addr2)
-            print(fullName1,fullName2,status,val,unit,addr1,addr2)
-            print(data)
+            #print(fullName1,fullName2,status,val,unit,addr1,addr2)
+            #print(data)
         return True
     
     
