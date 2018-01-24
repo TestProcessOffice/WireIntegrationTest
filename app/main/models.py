@@ -137,7 +137,7 @@ class Pgv:
         fp = open(self._file_in, U'r')
         txt = fp.read()
         lists = []
-        re1 = re.compile("(?<=:)\s+([A-Z]{2})\s+([0-9]+)\s+([0-9A-Z-]+)\s*:\s+([0-9]+)\s+([A-Z]+)\s+([0-9.M]+)\s+([A-Z]+)\s+([\w-]+)")
+        re1 = re.compile("(?<=:)\s+([A-Z]{2})\s+([0-9]+)\s+([\S]+)\s*:\s+([0-9]+)\s+([A-Z]+)\s+([<>0-9.MK]+)\s+([A-Z]+)\s+([\S]+)")
         for mat in re1.finditer(txt):
             line = mat.groups() #["command","addr1","pin1","addr2","status","value","unit","pin2"]
             pin1_addr, pin2_addr, status, value, unit = line[1], line[3], line[4], line[5], line[6]
@@ -148,6 +148,7 @@ class Pgv:
             lists.append(line)
         fp.close()
         self.info_lists = pd.DataFrame(lists, columns=Pgv.columns)
+        print(self.info_lists.shape)
         
     def _connector_index(self, pin_name):
         '''

@@ -3384,7 +3384,6 @@ F SMU       500V      30.00M              00.200S    00.100T
 :      	   	      	00945	PASS 	 675.0M   	OHM	GND
 :      	FC 	33111 	     	      	         	   	P-3313-P1-62
 :      	   	      	00945	PASS 	 681.6M   	OHM	GND
-:      	FC 	      	00945	PASS 	 798.9M   	OHM	GND
 :      	FC 	32539 	     	      	         	   	P-3314-P2-20
 :      	   	      	00945	PASS 	 690.4M   	OHM	GND
 :      	FC 	15345 	     	      	         	   	U-281-P5-*N
@@ -3399,7 +3398,6 @@ F SMU       500V      30.00M              00.200S    00.100T
 :      	   	      	00945	PASS 	 658.6M   	OHM	GND
 :      	FC 	33111 	     	      	         	   	P-3313-P1-62
 :      	   	      	00945	PASS 	 690.7M   	OHM	GND
-:      	FC 	      	00945	PASS 	 798.7M   	OHM	GND
 :      	FC 	32539 	     	      	         	   	P-3314-P2-20
 :      	   	      	00945	PASS 	 673.0M   	OHM	GND
 :      	FC 	15345 	     	      	         	   	U-281-P5-*N
@@ -4278,7 +4276,6 @@ F SMU       500V      30.00M              00.200S    00.100T
 :      	   	      	00945	PASS 	 242.9M   	OHM	GND
 :      	FC 	01913 	     	      	         	   	U-24J-R4-43
 :      	   	      	00945	PASS 	 780.0M   	OHM	GND
-:      	FC 	      	00945	PASS 	 860.1M   	OHM	GND
 :      	FC 	42220 	     	      	         	   	U-42B-P1-121
 :      	   	      	00945	PASS 	 345.7M   	OHM	GND
 :      	FC 	31224 	     	      	         	   	P-331G-P1-5
@@ -4783,7 +4780,6 @@ F SMU       500V      30.00M              00.200S    00.100T
 :      	   	      	00945	PASS 	 782.6M   	OHM	GND
 :      	FC 	33630 	     	      	         	   	P-3315-P1-1
 :      	   	      	00945	PASS 	 613.3M   	OHM	GND
-:      	FC 	      	00945	PASS 	 717.2M   	OHM	GND
 :      	FC 	33833 	     	      	         	   	P-3316-P1-54
 :      	   	      	00945	PASS 	 716.1M   	OHM	GND
 :      	FC 	33845 	     	      	         	   	P-3316-P1-66
@@ -5104,9 +5100,6 @@ F SMU       500V      30.00M              00.200S    00.100T
 :      	   	      	00945	PASS 	 751.4M   	OHM	GND
 :      	FC 	67625 	     	      	         	   	U-3341-P1-6
 :      	   	      	00945	PASS 	 729.3M   	OHM	GND
-:      	FC 	      	00945	PASS 	 829.2M   	OHM	GND
-:      	FC 	      	00945	PASS 	 843.4M   	OHM	GND
-:      	FC 	      	00945	PASS 	 905.6M   	OHM	GND
 :      	FC 	70145 	     	      	         	   	U-3342-P1-6
 :      	   	      	00945	PASS 	 762.3M   	OHM	GND
 :      	FC 	75915 	     	      	         	   	U-3344-P1-6
@@ -6713,15 +6706,6 @@ F SMU       500V      30.00M              00.200S    00.100T
 :      	   	      	00945	PASS 	 768.7M   	OHM	GND
 :      	FC 	74444 	     	      	         	   	U-491-P1-B-D2
 :      	   	      	00945	PASS 	 771.7M   	OHM	GND
-:      	FC 	      	00945	PASS 	 840.6M   	OHM	GND
-:      	FC 	      	00945	PASS 	 867.2M   	OHM	GND
-:      	FC 	      	00945	PASS 	 845.4M   	OHM	GND
-:      	FC 	      	00945	PASS 	 932.3M   	OHM	GND
-:      	FC 	      	00945	PASS 	 929.5M   	OHM	GND
-:      	FC 	      	00945	PASS 	 917.2M   	OHM	GND
-:      	FC 	      	00945	PASS 	 921.0M   	OHM	GND
-:      	FC 	      	00945	PASS 	 935.3M   	OHM	GND
-:      	FC 	      	00945	PASS 	 944.7M   	OHM	GND
 :      	FC 	57745 	     	      	         	   	1U-275A-P3-B-B2
 :      	   	      	00945	PASS 	 761.4M   	OHM	GND
 :      	FC 	57744 	     	      	         	   	1U-275A-P3-B-B1
@@ -6800,7 +6784,6 @@ F SMU       500V      30.00M              00.200S    00.100T
 :      	   	      	00945	PASS 	 695.9M   	OHM	GND
 :      	FC 	37236 	     	      	         	   	U-761-P2-G
 :      	   	      	00945	PASS 	 722.4M   	OHM	GND
-:      	FC 	      	00945	PASS 	 841.6M   	OHM	GND
 :      	FC 	06734 	     	      	         	   	U-785-P1-A-D5
 :      	   	      	00945	PASS 	 773.3M   	OHM	GND
 :      	FC 	06744 	     	      	         	   	U-785-P1-A-E5

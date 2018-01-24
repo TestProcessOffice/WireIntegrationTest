@@ -5036,10 +5036,6 @@ C SMU       0.100A               8.000    00.200S    00.100T
 :      	   	      	30508	PASS 	 2.284    	OHM	D-34E-P1-39
 :      	CC 	05405 	     	      	         	   	U-3311-P1-96
 :      	   	      	30507	PASS 	 2.302    	OHM	D-34E-P1-38
-Switching INVALID_ADDR Error (Control Console)
-R1[1EFF] 2[0080] 3[0005]
-Switching INVALID_ADDR Error (Control Console)
-R1[1EFF] 2[0080] 3[0005]
 :      	CC 	05224 	     	      	         	   	U-3311-P1-15
 :      	   	      	01914	PASS 	 2.432    	OHM	U-24J-R4-44
 :      	CC 	05620 	     	      	         	   	U-3311-P2-1

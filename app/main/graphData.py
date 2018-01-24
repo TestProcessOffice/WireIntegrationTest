@@ -141,8 +141,11 @@ class Neo4j(object):
             print("Please check connection of Neo4j Database!")
             return False
         row,col = info.shape
+        high_count = 0
         for r in range(row):
             cntName1,pin1,cntName2,pin2,testType,status,val,unit,addr1,addr2 = info.iloc[r]
+            if status == "HIGH":
+                high_count += 1
             if pin1 is np.nan or not pin1:
                fullName1 = unicode(cntName1)
             else:
@@ -161,8 +164,9 @@ class Neo4j(object):
             '''
             data = Neo4j._graph.run(query,name1=fullName1,name2=fullName2,\
                                  status=status,value=val,unit=unit,addr1=addr1,addr2=addr2)
-            #print(fullName1,fullName2,status,val,unit,addr1,addr2)
-            #print(data)
+            if not data:
+                print("NOT FOUND:",fullName1,fullName2,status,val,unit,addr1,addr2)
+        print("high count:",high_count)
         return True
     
     

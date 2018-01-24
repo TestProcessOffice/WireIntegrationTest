@@ -40,7 +40,7 @@ def ditmco():
     pgv = Pgv(res)
     print("pgv_info:", pgv.info_lists)
     db.pgv_update(pgv.info_lists)
-    flash("ditmco file been uploaded")
+    flash("ditmco file %s been uploaded"%res)
     return render_template("graph_data.html")
 
 
